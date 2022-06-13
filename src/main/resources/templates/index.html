@@ -26,32 +26,29 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ddd4e4b8dbce4d6834430569949728c5&libraries=services"></script>
 <script>
     $('#search').click(function () {
-        $(document).ready(function(){
+        if ("geolocation" in navigator) {	/* geolocation 사용 가능 */
+            navigator.geolocation.getCurrentPosition(function(data) {
 
-            if ("geolocation" in navigator) {	/* geolocation 사용 가능 */
-                navigator.geolocation.getCurrentPosition(function(data) {
+                var latitude = data.coords.latitude;
+                var longitude = data.coords.longitude;
 
-                    var latitude = data.coords.latitude;
-                    var longitude = data.coords.longitude;
+                $('#latitude').val(latitude);
+                $('#longitude').val(longitude);
 
-                    $('#latitude').val(latitude);
-                    $('#longitude').val(longitude);
-
-                    map();
-                }, function(error) {
-                    alert(error);
-                }, {
-                    enableHighAccuracy: true,
-                    timeout: Infinity,
-                    maximumAge: 0
-                });
-            } else {	/* geolocation 사용 불가능 */
-                alert('geolocation 사용 불가능');
-            }
-        });
+                showMap();
+            }, function(error) {
+                alert(error);
+            }, {
+                enableHighAccuracy: true,
+                timeout: Infinity,
+                maximumAge: 0
+            });
+        } else {	/* geolocation 사용 불가능 */
+            alert('geolocation 사용 불가능');
+        }
     });
 
-    function map() {
+    function showMap() {
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
             mapOption = {
                 center: new kakao.maps.LatLng($('#latitude').val(), $('#longitude').val()), // 지도의 중심좌표
