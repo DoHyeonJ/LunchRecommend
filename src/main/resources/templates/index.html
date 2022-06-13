@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Kakao 지도 시작하기</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="map" style="width:500px;height:400px;"></div>
+<input id="search" type="button" value="현위치"/>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ddd4e4b8dbce4d6834430569949728c5"></script>
+<script>
+    var container = document.getElementById('map');
+    var options = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 3
+    };
+
+    $('#search').click(function () {
+        $(document).ready(function(){
+
+            if ("geolocation" in navigator) {	/* geolocation 사용 가능 */
+                navigator.geolocation.getCurrentPosition(function(data) {
+
+                    var latitude = data.coords.latitude;
+                    var longitude = data.coords.longitude;
+
+                    $('#latitude').text(latitude);
+                    $('#longitude').text(longitude);
+                }, function(error) {
+                    alert(error);
+                }, {
+                    enableHighAccuracy: true,
+                    timeout: Infinity,
+                    maximumAge: 0
+                });
+            } else {	/* geolocation 사용 불가능 */
+                alert('geolocation 사용 불가능');
+            }
+
+        });
+    });
+
+    var map = new kakao.maps.Map(container, options);
+</script>
+</body>
+</html>
