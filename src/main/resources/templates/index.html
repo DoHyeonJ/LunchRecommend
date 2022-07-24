@@ -3,14 +3,21 @@
 <head>
     <meta charset="utf-8"/>
     <title>Kakao 지도 시작하기</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"
-            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <input id="latitude" type="hidden" value=""/>
 <input id="longitude" type="hidden" value=""/>
 <div>
-    <input id="search" type="button" value="현위치 조회"/>
+<!--    <label>-->
+<!--        검색 수-->
+<!--        <select id="select_count">-->
+<!--            <option value="1">15개</option>-->
+<!--            <option value="2">30개</option>-->
+<!--            <option value="3">45개</option>-->
+<!--        </select>-->
+<!--    </label>-->
+    <input type="hidden" id="select_count" value="3">
     <input id="lunch_recommend" type="button" value="맛집 추천"/>
 </div>
 
@@ -27,10 +34,11 @@
         if ("geolocation" in navigator) {	/* geolocation 사용 가능 */
             navigator.geolocation.getCurrentPosition(function (data) {
 
-                var latitude = data.coords.latitude;
-                var longitude = data.coords.longitude;
+                const latitude = data.coords.latitude;
+                const longitude = data.coords.longitude;
+                const page = $('#select_count').val();
 
-                searchLunchReccomend(latitude, longitude);
+                searchLunchReccomend(latitude, longitude, page);
             }, function (error) {
                 alert(error);
             }, {
@@ -43,41 +51,62 @@
         }
     });
 
-    function searchLunchReccomend(latitude, longitude) {
-        const jsonData = {
-            latitude: latitude,
-            longitude: longitude
-        }
+    function searchLunchReccomend(latitude, longitude, page) {
 
-        $.ajax({
-            type: "post",
-            url: "/lunch",
-            data: jsonData,
-            dataType: "json",
-            success: function (result) {
-                const lunchDiv = $('#lunch_list');
-                const resultList = Object.values(result)[0];
-                lunchDiv.append('<div> < 밥집 리스트 > </div>');
+        // 이미 한번이라도 호출했던 리스트 제거
+        $('.lunch_list_content').remove();
 
-                // TODO 공통사용 스크립트 함수화 작업 필요
-                resultList.forEach(function (item) {
-                    const address = item.address_name;
-                    const url = item.place_url;
-                    const phone = item.phone;
-                    const x = item.x;
-                    const y = item.y;
-                    const name = item.place_name;
-                    const div = '<div class="lunch_list_content"' + 'data-address=' + address + 'data-url=' + url + 'data-x=' + x + 'data-y=' + y + 'data-phone=' + phone + '>' + name + '</div>'
-                    lunchDiv.append(div);
-                });
-            },
-            error: function (e) {
-                alert("Fail");
-                console.log(e);
+        for (var i=1; i<parseInt(page)+1; i++) {
+            const jsonData = {
+                latitude: latitude,
+                longitude: longitude,
+                page: i
             }
-        });
+
+            // TODO page 값 받아서 반복 돌리고 return 15, 30, 45
+            $.ajax({
+                type: "post",
+                url: "/lunch",
+                data: jsonData,
+                dataType: "json",
+                success: function (result) {
+                    const lunchDiv = $('#lunch_list');
+                    const resultList = Object.values(result)[0];
+
+                    // TODO 공통사용 스크립트 함수화 작업 필요
+                    resultList.forEach(function (item) {
+
+                        // 특정 카테고리 예외처리
+                        if (checkCategoryName(item.category_name)) {
+                            return;
+                        }
+
+                        const address = item.address_name;
+                        const url = item.place_url;
+                        const phone = item.phone;
+                        const x = item.x;
+                        const y = item.y;
+                        const name = item.place_name;
+                        const div = '<div class="lunch_list_content" ' + 'data-address=' + address + 'data-url=' + url + 'data-x=' + x + 'data-y=' + y + 'data-phone=' + phone + '>' + name + '</div>'
+                        lunchDiv.append(div);
+                    });
+                },
+                error: function (e) {
+                    alert("Fail");
+                    console.log(e);
+                }
+            });
+        }
     }
 
+    /**
+     * 카테고리 명칭에 점심이 아닌 값이 포함되었는지 체크
+     * @param name 카테고리 명칭
+     * @returns {boolean}
+     */
+    function checkCategoryName(name) {
+        return (name.includes('간식') || name.includes('술집') || name.includes('레스토랑'));
+    }
 
 </script>
 </body>

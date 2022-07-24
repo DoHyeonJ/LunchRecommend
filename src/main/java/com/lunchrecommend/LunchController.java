@@ -16,12 +16,18 @@ public class LunchController {
 
     private final LunchService lunchService;
 
+    /**
+     * 음식점 추천 List Post 요청
+     * @param request 요청 데이터
+     * @return ResponseEntity
+     */
     @PostMapping("/lunch")
     private ResponseEntity<String> searchLunch(HttpServletRequest request) {
         String latitude = request.getParameter("latitude");
         String longitude = request.getParameter("longitude");
+        String page = request.getParameter("page");
 
-        ResponseEntity response = lunchService.getSearchLunchList(latitude, longitude, 1, 15);
+        ResponseEntity response = lunchService.getSearchLunchList(latitude, longitude, page, "15");
         return response;
     }
 
