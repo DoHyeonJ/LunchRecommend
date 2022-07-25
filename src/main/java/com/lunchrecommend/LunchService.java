@@ -24,8 +24,6 @@ public class LunchService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "KakaoAK f66d5d626664079ae9aceadae18273fa");
 
-        System.out.println(longitude + " -> " + latitude);
-
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
         String baseUrl = "https://dapi.kakao.com/v2/local/search/category.json?" +

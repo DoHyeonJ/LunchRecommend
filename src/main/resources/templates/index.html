@@ -19,6 +19,7 @@
 <!--    </label>-->
     <input type="hidden" id="select_count" value="3">
     <input id="lunch_recommend" type="button" value="맛집 추천"/>
+    <input style="display: none;" id="random_recommend" type="button" value="랜덤 추천"/>
 </div>
 
 <div id="lunch_list">
@@ -90,6 +91,9 @@
                         const div = '<div class="lunch_list_content" ' + 'data-address=' + address + 'data-url=' + url + 'data-x=' + x + 'data-y=' + y + 'data-phone=' + phone + '>' + name + '</div>'
                         lunchDiv.append(div);
                     });
+
+                    $('#lunch_recommend').hide();
+                    $('#random_recommend').show();
                 },
                 error: function (e) {
                     alert("Fail");
@@ -99,6 +103,17 @@
         }
     }
 
+    // 랜덤 추천 클릭 이벤트
+    $('#random_recommend').click(function () {
+        const tag = $('.lunch_list_content');
+        const cnt = tag.length;
+        const num = randomNum(0, cnt-1);
+
+        // 랜덤태그 1개만 남기고 hide 처리
+        tag.hide();
+        tag.eq(num).show();
+    });
+
     /**
      * 카테고리 명칭에 점심이 아닌 값이 포함되었는지 체크
      * @param name 카테고리 명칭
@@ -106,6 +121,17 @@
      */
     function checkCategoryName(name) {
         return (name.includes('간식') || name.includes('술집') || name.includes('레스토랑'));
+    }
+
+    /**
+     * 랜덤으로 수 추출
+     * @param min 최소값
+     * @param max 최대값
+     * @returns {*}
+     */
+    function randomNum(min, max){
+        var randNum = Math.floor(Math.random()*(max-min+1)) + min;
+        return randNum;
     }
 
 </script>
