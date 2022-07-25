@@ -27,20 +27,17 @@ public class LunchController {
         String longitude = request.getParameter("longitude");
         String page = request.getParameter("page");
 
-        ResponseEntity response = lunchService.getSearchLunchList(latitude, longitude, page, "15");
-        return response;
+        return lunchService.getSearchLunchList(latitude, longitude, page, "15");
     }
 
     @PutMapping("/lunch")
     private ResponseEntity<String> updateLunch() {
-        ResponseEntity response = ResponseEntity.status(HttpStatus.OK).body("PutMapping!!");
-        return response;
+        return ResponseEntity.status(HttpStatus.OK).body("PutMapping!!");
     }
 
     @DeleteMapping("lunch")
     private ResponseEntity<String> deleteLunch() {
-        ResponseEntity response = ResponseEntity.status(HttpStatus.NO_CONTENT).body("DeleteMapping!!");
-        return response;
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("DeleteMapping!!");
     }
 
 }

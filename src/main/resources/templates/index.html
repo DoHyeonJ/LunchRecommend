@@ -9,14 +9,6 @@
 <input id="latitude" type="hidden" value=""/>
 <input id="longitude" type="hidden" value=""/>
 <div>
-<!--    <label>-->
-<!--        검색 수-->
-<!--        <select id="select_count">-->
-<!--            <option value="1">15개</option>-->
-<!--            <option value="2">30개</option>-->
-<!--            <option value="3">45개</option>-->
-<!--        </select>-->
-<!--    </label>-->
     <input type="hidden" id="select_count" value="3">
     <input id="lunch_recommend" type="button" value="맛집 추천"/>
     <input style="display: none;" id="random_recommend" type="button" value="랜덤 추천"/>
@@ -64,7 +56,6 @@
                 page: i
             }
 
-            // TODO page 값 받아서 반복 돌리고 return 15, 30, 45
             $.ajax({
                 type: "post",
                 url: "/lunch",

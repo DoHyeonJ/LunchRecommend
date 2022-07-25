@@ -4,7 +4,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class LunchService {
@@ -20,9 +20,9 @@ public class LunchService {
      */
     public ResponseEntity<String> getSearchLunchList(String longitude, String latitude, String page, String size) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(new MediaType[] { MediaType.APPLICATION_JSON }));
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "KakaoAK f66d5d626664079ae9aceadae18273fa");
+        headers.set("Authorization", "KakaoAK {APIKEY}");
 
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 
@@ -35,9 +35,8 @@ public class LunchService {
                 "&y=" + longitude;
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.exchange(baseUrl, HttpMethod.GET, entity, String.class);
 
-        return response;
+        return restTemplate.exchange(baseUrl, HttpMethod.GET, entity, String.class);
     }
 
 }
