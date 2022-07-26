@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <title>Kakao 지도 시작하기</title>
     <script src="https://code.jquery.com/jquery-3.6.0.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<input id="latitude" type="hidden" value=""/>
-<input id="longitude" type="hidden" value=""/>
 <div>
-    <input type="hidden" id="select_count" value="3">
     <input id="lunch_recommend" type="button" value="맛집 추천"/>
     <input style="display: none;" id="random_recommend" type="button" value="랜덤 추천"/>
 </div>
@@ -18,9 +16,9 @@
     <!-- lunch list area -->
 </div>
 
-<!-- TODO : appkey 변수화 작업 필요-->
-<script type="text/javascript"
-        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ddd4e4b8dbce4d6834430569949728c5&libraries=services"></script>
+<!-- 카카오 appKey -->
+<script th:src="${appKey}"></script>
+
 <script>
 
     $('#lunch_recommend').click(function () {
@@ -29,7 +27,7 @@
 
                 const latitude = data.coords.latitude;
                 const longitude = data.coords.longitude;
-                const page = $('#select_count').val();
+                const page = 3; // 추후 선택할수 있게 변경
 
                 searchLunchReccomend(latitude, longitude, page);
             }, function (error) {

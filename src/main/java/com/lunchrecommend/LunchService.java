@@ -18,11 +18,11 @@ public class LunchService {
      * @param size 페이지당 조회 수 15
      * @return ResponseEntity
      */
-    public ResponseEntity<String> getSearchLunchList(String longitude, String latitude, String page, String size) {
+    public ResponseEntity<String> getSearchLunchList(String longitude, String latitude, String page, String size, String apiKey) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "KakaoAK {APIKEY}");
+        headers.set("Authorization", "KakaoAK " + apiKey);
 
         HttpEntity<String> entity = new HttpEntity<>("", headers);
 

@@ -1,6 +1,7 @@
 package com.lunchrecommend;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,10 @@ public class LunchController {
 
     private final LunchService lunchService;
 
+    // 카카오 API 키 (application.properties 설정)
+    @Value("${apikey.kakao}")
+    private String apiKey;
+
     /**
      * 음식점 추천 List Post 요청
      * @param request 요청 데이터
@@ -27,7 +32,7 @@ public class LunchController {
         String longitude = request.getParameter("longitude");
         String page = request.getParameter("page");
 
-        return lunchService.getSearchLunchList(latitude, longitude, page, "15");
+        return lunchService.getSearchLunchList(latitude, longitude, page, "15", apiKey);
     }
 
     @PutMapping("/lunch")
