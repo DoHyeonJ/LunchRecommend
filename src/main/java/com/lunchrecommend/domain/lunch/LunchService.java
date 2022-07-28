@@ -1,4 +1,4 @@
-package com.lunchrecommend;
+package com.lunchrecommend.domain.lunch;
 
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.lunchrecommend;
+package com.lunchrecommend.controller;
 
 
 import org.springframework.beans.factory.annotation.Value;

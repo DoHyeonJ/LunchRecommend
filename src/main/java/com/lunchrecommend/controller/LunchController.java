@@ -1,5 +1,6 @@
-package com.lunchrecommend;
+package com.lunchrecommend.controller;
 
+import com.lunchrecommend.domain.lunch.LunchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
